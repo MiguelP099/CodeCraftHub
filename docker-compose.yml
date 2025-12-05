@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  user-service:
+    build:
+      context: .  # Path to the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  # Map port 3000 of the container to port 3000 on the host
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/user-service  # MongoDB connection string
+      JWT_SECRET: af93kj12l3k12983h1o2i3j12983u1293j1928jf09283jf09283j  # Replace with your secret by now 
+      PORT: 3000
+    depends_on:
+      - mongo  # Wait for the MongoDB service to start
+
+  mongo:
+    image: mongo:latest  # Use the official MongoDB image
+    ports:
+      - "27017:27017"  # Map port 27017 of the container to port 27017 on the host
+    volumes:
+      - mongo-data:/data/db  # Persist MongoDB data
+
+volumes:
+  mongo-data:  # Named volume for MongoDB data persistence
